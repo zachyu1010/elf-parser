@@ -7,6 +7,7 @@ void disassemble(int32_t fd, Elf32_Ehdr eh, Elf32_Shdr* sh_table)
 	char* sh_str;   /* section-header string-table is also a section. */
 	char* buf;      /* buffer to hold contents of the .text section */
 
+    printf("<<<<< diassemble text section >>>>>\n");
 	/* Read section-header string-table */
 	debug("eh.e_shstrndx = 0x%x\n", eh.e_shstrndx);
 	sh_str = read_section(fd, sh_table[eh.e_shstrndx]);

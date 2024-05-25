@@ -14,7 +14,8 @@
 #define debug(...) \
             do { if (DEBUG) printf("<debug>:"__VA_ARGS__); } while (0)
 
-void disassemble(int32_t fd, Elf32_Ehdr eh, Elf32_Shdr* sh_tbl);
+/* 64-bits api */
+bool is64Bit(Elf32_Ehdr eh);
 void disassemble64(int32_t fd, Elf64_Ehdr eh, Elf64_Shdr* sh_tbl);
 void read_elf_header64(int32_t fd, Elf64_Ehdr *elf_header);
 bool is_ELF64(Elf64_Ehdr eh);
@@ -25,14 +26,24 @@ void print_section_headers64(int32_t fd, Elf64_Ehdr eh, Elf64_Shdr sh_table[]);
 void print_symbol_table64(int32_t fd,Elf64_Ehdr eh,Elf64_Shdr sh_table[],uint32_t symbol_table);
 void print_symbols64(int32_t fd, Elf64_Ehdr eh, Elf64_Shdr sh_table[]);
 void save_text_section64(int32_t fd, Elf64_Ehdr eh, Elf64_Shdr sh_table[]);
-void read_elf_header(int32_t fd, Elf32_Ehdr *elf_header);
+
+
+/* 32-bits api */
+void disassemble(int32_t fd, Elf32_Ehdr eh, Elf32_Shdr* sh_tbl);
 bool is_ELF(Elf32_Ehdr eh);
+/* elf-header-related api */
+void read_elf_header(int32_t fd, Elf32_Ehdr *elf_header);
 void print_elf_header(Elf32_Ehdr elf_header);
+/* program(segment)-related api */
+void read_program_header_table(int32_t fd, Elf32_Ehdr eh, Elf32_Phdr ph_table[]);
+void print_program_headers(int32_t fd, Elf32_Ehdr eh, Elf32_Phdr ph_table[]);
+/* section-related api */
 void read_section_header_table(int32_t fd, Elf32_Ehdr eh, Elf32_Shdr sh_table[]);
-char * read_section(int32_t fd, Elf32_Shdr sh);
 void print_section_headers(int32_t fd, Elf32_Ehdr eh, Elf32_Shdr sh_table[]);
+char * read_section(int32_t fd, Elf32_Shdr sh);
+/* symbol-related api */
 void print_symbol_table(int32_t fd,Elf32_Ehdr eh,Elf32_Shdr sh_table[],uint32_t symbol_table);
 void print_symbols(int32_t fd, Elf32_Ehdr eh, Elf32_Shdr sh_table[]);
+
 void save_text_section(int32_t fd, Elf32_Ehdr eh, Elf32_Shdr sh_table[]);
-bool is64Bit(Elf32_Ehdr eh);
 

@@ -57,10 +57,20 @@ int32_t main(int32_t argc, char *argv[])
 		disassemble64(fd, eh64, sh_tbl);
 
 	} else{
-		Elf32_Shdr* sh_tbl;	/* section-header table is variable size */
 		print_elf_header(eh);
 
+		/* Program header table :  */
+        Elf32_Phdr* ph_tbl;
+		ph_tbl = malloc(eh.e_phentsize * eh.e_phnum);
+		if(!ph_tbl) {
+			printf("Failed to allocate %d bytes\n",
+					(eh.e_phentsize * eh.e_phnum));
+		}
+		read_program_header_table(fd, eh, ph_tbl);
+		print_program_headers(fd, eh, ph_tbl);
+
 		/* Section header table :  */
+		Elf32_Shdr* sh_tbl;	/* section-header table is variable size */
 		sh_tbl = malloc(eh.e_shentsize * eh.e_shnum);
 		if(!sh_tbl) {
 			printf("Failed to allocate %d bytes\n",
@@ -85,6 +95,8 @@ int32_t main(int32_t argc, char *argv[])
 		 * Currently supports ARMv7
 		 */
 		disassemble(fd, eh, sh_tbl);
+        free(ph_tbl);
+        free(sh_tbl);
 	}
 
 	return 0;
